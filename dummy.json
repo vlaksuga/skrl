@@ -1,0 +1,36 @@
+{
+    "head" : "OK",
+    "body" : {
+        "title" : "TITLE",
+        "nav" : {
+            "top" : {
+                "isUsing" : true,
+                "layout" : "sb",
+                "data" : [
+                    { "name" : "home", "isIcon" : false },
+                    { "name" : "about", "isIcon" : false },
+                    { "name" : "board", "isIcon" : false }
+                ]
+            } ,
+            "sub" : {
+                "isUsing" : true,
+                "layout" : "sb",
+                "data" : [
+                    { "name" : "sub1", "isIcon" : false },
+                    { "name" : "sub2", "isIcon" : false },
+                    { "name" : "sub3", "isIcon" : false }
+                ]
+            } 
+        },
+        "section" : [
+            {
+            "action" : "FADE_OUT",
+            "event" : "scroll",
+            "layout" : "center",
+            "contents" : [
+                { "tagName" : "p", "text" : "BIG TITLE", "class" : "BIG" },
+                { "tagName" : "p", "text" : "SUB TITLE", "class" : "SUB" }
+            ] }
+        ]
+    }
+}

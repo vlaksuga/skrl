@@ -1,49 +1,17 @@
-const SECTION_ACTIONS = {
-    FADE_OUT : 0
+const ANIMATION = {
+    EXPAND_LARGE : 3,
+    FADE_OUT : "FADE_OUT",
+    EXPAND : "EXPAND"
 }
 
-Object.freeze(SECTION_ACTIONS);
+Object.freeze(ANIMATION);
 
-const TOP_MENU_LIST = [
-    {
-        title : "HOME",
-        isIcon : false
-    },
-    {
-        title : "NAV1",
-        isIcon : false
-    },
-    {
-        title : "NAV2",
-        isIcon : false
-    }
-]
+const DEFAULT = {
+    TITLE : "DEFAULT TITLE",
+    NAV_ITEM : "DEFAULT NAV"
+}
 
-const SUB_MENU_LIST = [
-    {
-        title : "sub1"
-    },
-    {
-        title : "sub2"
-    }
-]
-
-
-
-const SECTION_LIST = [
-    {
-        title : "SECTION1",
-        action : SECTION_ACTIONS.FADE_OUT
-    },
-    {
-        title : "SECTION2",
-        action : SECTION_ACTIONS.FADE_OUT
-    },
-    {
-        title : "SECTION3",
-        action : SECTION_ACTIONS.FADE_OUT
-    }
-]
-
-const FOOTER = {}
+const CONFIG = {
+    SCROLL_SENCIBILITY : 150
+}
 

@@ -1,51 +1,68 @@
 window.addEventListener("DOMContentLoaded", () => {
-    appendHeader();
-    appendSections(SECTION_LIST);
-    appendFooter(FOOTER);
+    /* fecth db => rander() */
+    fetch("dummy.json")
+    .then(res => res.json())
+    .then(data => { if(data.head == "OK") render(data)} );
 });
 
-function appendHeader() {
-    if(TOP_MENU_LIST) { setNav("top-nav", TOP_MENU_LIST); }
-    if(SUB_MENU_LIST) { setNav("sub-nav", SUB_MENU_LIST); }
+function render(data) {
+    setTitle(data);
+    setHeader(data);
+    setMain(data);
 }
 
-function setNav(classname, menus) {
-    var nav = document.getElementsByClassName(classname)[0];
+function setTitle(data) {
+    document.title = data.body.title ?? DEFAULT.TITLE;
+}
+
+function setHeader(data) {
+    const top = data.body.nav.top ?? { isUsing : false };
+    const sub = data.body.nav.sub ?? { isUsing : false };
+    if(top && top.isUsing) { document.body.appendChild(createNav("top-nav", top)); }
+    if(sub && top.isUsing) { document.body.appendChild(createNav("sub-nav", sub)); }
+}
+
+function setMain(data) {
+    const main = document.createElement('main');
+    document.body.appendChild(main);
+    const sections = data.body.section;
+    const layoutManager = new LayoutManager();
+    for(const [idx, section] of sections.entries()) {
+        section.idx = idx;
+        section.siblings = sections.length;
+        const sectionEle = layoutManager.getLayout(section);        
+        main.appendChild(sectionEle);
+        setSectionAction(sectionEle, section);
+    }
+    main.style.height = CONFIG.SCROLL_SENCIBILITY * (Array.from(sections).length + 1) + "vh";
+}
+
+function createNav(className, obj) {
     var ul = document.createElement("ul")
-    ul.classList.add(classname + "-ul")
-    nav.appendChild(ul);
-    for(const menu of menus) {
-        const menuEle = document.createElement("li");
-        menuEle.innerText = menu.title;
-        menuEle.classList.add(classname + "-item");
-        ul.appendChild(menuEle);
-    }   
+        ul.classList.add(className + "-ul", "nav-layout-" + obj.layout)
+    var nav = document.createElement("nav");
+        nav.classList.add(className);
+        nav.appendChild(ul);
+    for(const item of obj.data) {
+        const itemEle = document.createElement("li");
+            itemEle.innerText = item.name ?? DEFAULT.NAV_ITEM;
+            itemEle.classList.add(className + "-item");
+        ul.appendChild(itemEle);
+    }
+    return nav;
 } 
 
-function appendSections(sections) {
-    const main = document.querySelector('main');
-    for(const [idx, section] of sections.entries()) {
-        const sectionEle = document.createElement("section");
-        const bigTitle = document.createElement("p");
-        bigTitle.innerText = section.title;
-        sectionEle.appendChild(bigTitle);
-        sectionEle.style.zIndex = Array.from(sections).length - idx;
-        main.appendChild(sectionEle);
-        setSectionAction(sectionEle, section, idx);
-    }
-    main.style.height = 100 * Array.from(sections).length + "vh"
-}
 
-function setSectionAction(ele, section, idx) {
-    switch(section.action) {
-        case SECTION_ACTIONS.FADE_OUT : {
-            animateFadeOut(ele, section, idx)
-        }
+function setSectionAction(ele, obj) {
+    switch(obj.event) {
+        case "scroll" : { animateByScroll(ele, obj) }
     }
 }
 
-function appendFooter(footer) {
-    const footerEle = document.createElement("footer");
-    footerEle.innerText = "footer";
-    document.body.appendChild(footerEle);
+function appendFooter(footerInfo) {
+    if(footerInfo) {
+        var footer = document.createElement("footer");
+        document.body.appendChild(footer)
+        footer.innerText = "footer";
+    }
 }
